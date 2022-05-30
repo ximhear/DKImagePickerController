@@ -24,6 +24,7 @@ open class DKImageExtensionPhotoCropper: DKImageBaseExtension {
     }
         
     override open func perform(with extraInfo: [AnyHashable: Any]) {
+        GZLogFunc()
         guard let sourceImage = extraInfo["image"] as? UIImage
             , let didFinishEditing = extraInfo["didFinishEditing"] as? ((UIImage, [AnyHashable : Any]?) -> Void) else { return }
         
