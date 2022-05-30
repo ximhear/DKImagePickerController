@@ -273,12 +273,14 @@ class ViewController: UIViewController,
 
 class AssetClickHandler: DKImagePickerControllerBaseUIDelegate {
     override func imagePickerController(_ imagePickerController: DKImagePickerController, didSelectAssets: [DKAsset]) {
+        GZLogFunc()
         //tap to select asset
         //use this place for asset selection customisation
         print("didClickAsset for selection")
     }
     
     override func imagePickerController(_ imagePickerController: DKImagePickerController, didDeselectAssets: [DKAsset]) {
+        GZLogFunc()
         //tap to deselect asset
         //use this place for asset deselection customisation
         print("didClickAsset for deselection")
