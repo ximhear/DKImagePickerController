@@ -35,5 +35,5 @@ public func GZLogFunc(_ message: @autoclosure () -> Any? = "", function: String 
     if GZLOG_FLAG == false {
         return
     }
-    NSLog("\(GZLogUtil.formatter.string(from: Date())) [\(fileNameOfFile(file)) \(function)](\(line)) \(GZLogUtil.notNilObj(message()))")
+    print("\(GZLogUtil.formatter.string(from: Date())) [\(fileNameOfFile(file)) \(function)](\(line)) \(GZLogUtil.notNilObj(message()))")
 }
