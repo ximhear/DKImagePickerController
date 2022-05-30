@@ -233,7 +233,7 @@ class ViewController: UIViewController,
             }
         }
         
-        print("exporterWillBeginExporting")
+        GZLogFunc("exporterWillBeginExporting")
     }
     
     func exporterDidUpdateProgress(exporter: DKImageAssetExporter, asset: DKAsset) {
@@ -247,7 +247,7 @@ class ViewController: UIViewController,
                 }
             }
             
-            print("exporterDidUpdateProgress with \(asset.progress)")
+            GZLogFunc("exporterDidUpdateProgress with \(asset.progress)")
         }
     }
     
@@ -260,9 +260,9 @@ class ViewController: UIViewController,
             }
             
             if let error = asset.error {
-                print("exporterDidEndExporting with error:\(error.localizedDescription)")
+                GZLogFunc("exporterDidEndExporting with error:\(error.localizedDescription)")
             } else {
-                print("exporterDidEndExporting:\(asset.localTemporaryPath!)")
+                GZLogFunc("exporterDidEndExporting:\(asset.localTemporaryPath!)")
             }
         }
     }
@@ -276,13 +276,13 @@ class AssetClickHandler: DKImagePickerControllerBaseUIDelegate {
         GZLogFunc()
         //tap to select asset
         //use this place for asset selection customisation
-        print("didClickAsset for selection")
+        GZLogFunc("didClickAsset for selection")
     }
     
     override func imagePickerController(_ imagePickerController: DKImagePickerController, didDeselectAssets: [DKAsset]) {
         GZLogFunc()
         //tap to deselect asset
         //use this place for asset deselection customisation
-        print("didClickAsset for deselection")
+        GZLogFunc("didClickAsset for deselection")
     }
 }
