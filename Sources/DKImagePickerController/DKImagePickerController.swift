@@ -401,6 +401,7 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     }
     
     private func showCamera() {
+        GZLogFunc()
         let didCancel = { [unowned self] () in
             self.didCancelCamera()
         }
@@ -467,6 +468,7 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     // MARK: - Capturing Image
     
     internal func processImageFromCamera(_ image: UIImage, _ metadata: [AnyHashable : Any]?) {
+        GZLogFunc()
         self.saveImage(image, metadata) { asset in
             if !self.isInlineCamera {
                 self.dismissCamera()
@@ -565,6 +567,7 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     }
     
     @objc open func select(assets: [DKAsset]) {
+        GZLogFunc()
         if self.singleSelect {
             self.deselectAll()
         }

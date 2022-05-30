@@ -12,7 +12,13 @@ Pod::Spec.new do |s|
   s.requires_arc  = true
   s.swift_version = ['4.2', '5']
 
+  s.subspec 'GZLog' do |gzlog|
+    gzlog.frameworks    = "Foundation"
+    gzlog.source_files = "Sources/GZLog/GZLog.swift"
+  end
+
   s.subspec 'Core' do |core|
+    core.dependency 'DKImagePickerController/GZLog'
     core.dependency 'DKImagePickerController/ImageDataManager'
     core.dependency 'DKImagePickerController/Resource'
 
@@ -22,16 +28,19 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'ImageDataManager' do |image|
+    image.dependency 'DKImagePickerController/GZLog'
     image.source_files = "Sources/DKImageDataManager/**/*.swift"
   end
 
   s.subspec 'Resource' do |resource|
+    resource.dependency 'DKImagePickerController/GZLog'
     resource.resource_bundle = { "DKImagePickerController" => "Sources/DKImagePickerController/Resource/Resources/*" }
 
     resource.source_files = "Sources/DKImagePickerController/Resource/DKImagePickerControllerResource.swift"
   end
 
   s.subspec 'PhotoGallery' do |gallery|
+    gallery.dependency 'DKImagePickerController/GZLog'
     gallery.dependency 'DKImagePickerController/Core'
     gallery.dependency 'DKPhotoGallery'
 
@@ -39,6 +48,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Camera' do |camera|
+    camera.dependency 'DKImagePickerController/GZLog'
     camera.dependency 'DKImagePickerController/Core'
     camera.dependency 'DKCamera'
 
@@ -46,6 +56,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'InlineCamera' do |inlineCamera|
+    inlineCamera.dependency 'DKImagePickerController/GZLog'
     inlineCamera.dependency 'DKImagePickerController/Core'
     inlineCamera.dependency 'DKCamera'
 
@@ -53,6 +64,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'PhotoEditor' do |photoEditor|
+    photoEditor.dependency 'DKImagePickerController/GZLog'
     photoEditor.dependency 'DKImagePickerController/Core'
     photoEditor.dependency 'CropViewController', '~> 2.5'
 
