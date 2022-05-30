@@ -228,6 +228,7 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     
     private var needShowInlineCamera = true
     override open func viewWillAppear(_ animated: Bool) {
+        GZLogFunc()
         super.viewWillAppear(animated)
         
         self.doSetupOnce()
