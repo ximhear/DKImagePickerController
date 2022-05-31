@@ -503,6 +503,13 @@ open class DKAssetGroupDetailVC: UIViewController,
         }
     }
 
+    func showPhotoEditor(from cell: DKAssetGroupDetailBaseCell) {
+        if let groupId = self.selectedGroupId {
+            let presentationIndex = cell.tag - 1 - (self.hidesCamera ? 0 : 1)
+            imagePickerController?.showPhotoEditor(with: presentationIndex, groupId: groupId)
+        }
+    }
+
     // MARK: - Cells
 
     func registerCellIfNeeded(cellClass: DKAssetGroupDetailBaseCell.Type) {
@@ -582,8 +589,9 @@ open class DKAssetGroupDetailVC: UIViewController,
             imagePickerController.UIDelegate.needsToShowPreviewOnLongPress() {
 
             cell.longPressBlock = { [weak self, weak cell] in
+                GZLogFunc()
                 guard let strongSelf = self, let strongCell = cell else { return }
-                strongSelf.showGallery(from: strongCell)
+                strongSelf.showPhotoEditor(from: strongCell)
             }
         }
     }
@@ -647,6 +655,7 @@ open class DKAssetGroupDetailVC: UIViewController,
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        GZLogFunc()
         if self.isCameraCell(indexPath: indexPath) {
             collectionView .deselectItem(at: indexPath, animated: false)
             if UIImagePickerController.isSourceTypeAvailable(.camera) {

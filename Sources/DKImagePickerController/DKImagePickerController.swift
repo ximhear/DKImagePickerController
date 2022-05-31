@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import DKPhotoGallery
 
 /**
  - AllPhotos: Get all photos assets in the assets group.
@@ -422,7 +423,10 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
                         extraInfo["metadata"] = metadata
                     }
                     
+                    GZLogFunc(extraInfo)
+                    GZLogFunc()
                     strongSelf.extensionController.perform(extensionType: .photoEditor, with: extraInfo)
+//                    strongSelf.extensionController.perform(extensionType: .photoEditor, with: [:])
                 } else {
                     didFinishEditing(image, metadata)
                 }
@@ -806,4 +810,38 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
         self.extensionController.perform(extensionType: .gallery, with: extraInfo)
     }
     
+    open func showPhotoEditor(with presentationIndex: Int?,
+                            groupId: String) {
+        GZLogFunc()
+        guard let group = self.groupDataManager.fetchGroup(with: groupId) else {
+            GZLogFunc()
+            return
+        }
+        guard let phAsset = self.groupDataManager.fetchPHAsset(group, index: presentationIndex!) else {
+            GZLogFunc()
+            return
+        }
+//        DKImageExtensionController.checkDefaultExtensions
+        
+        let item = DKPhotoGalleryItem(asset: phAsset)
+        let asset = DKAsset(originalAsset: phAsset)
+        asset.fetchFullScreenImage {[weak self] image, info in
+            guard let sself = self, let image = image else {
+                return
+            }
+            let didFinishEditing: ((UIImage, [AnyHashable : Any]?) -> Void) = {[weak self] (image, metadata) in
+                GZLogFunc()
+                self?.processImageFromCamera(image, metadata)
+            }
+            GZLogFunc()
+            var extraInfo: [AnyHashable : Any] = [
+                "image" : image,
+                "didFinishEditing" : didFinishEditing
+            ]
+            GZLogFunc(extraInfo)
+            GZLogFunc()
+            sself.extensionController.perform(extensionType: .photoEditor, with: extraInfo)
+        }
+        
+    }
 }

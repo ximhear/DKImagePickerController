@@ -131,6 +131,7 @@ open class DKImageExtensionController: NSObject {
     }
 
     public func isExtensionTypeAvailable(_ extensionType: DKImageExtensionType) -> Bool {
+        GZLogFunc(self.blacklist)
         return !self.blacklist.contains(extensionType) && self.fetchExtensionClass(extensionType) != nil
     }
     
@@ -152,6 +153,7 @@ open class DKImageExtensionController: NSObject {
     }
     
     private func fetchExtensionClass(_ extensionType: DKImageExtensionType) -> DKImageBaseExtension.Type? {
+        GZLogFunc(DKImageExtensionController.extensions)
         if let extensionClass = DKImageExtensionController.extensions[extensionType] ??
             DKImageExtensionController.defaultExtensions[extensionType] {
             return extensionClass is DKImageExtensionNone.Type ? nil : extensionClass
