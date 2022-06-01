@@ -481,6 +481,14 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
         }
     }
     
+    internal func processImageFromGallery(_ image: UIImage, _ metadata: [AnyHashable : Any]?) {
+        GZLogFunc()
+        self.saveImage(image, metadata) { asset in
+            self.extensionController.finish(extensionType: .photoEditor)
+            self.select(asset: asset)
+        }
+    }
+    
     // MARK: - Save Image
     
     @objc open func saveImage(_ image: UIImage,
@@ -831,7 +839,7 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
             }
             let didFinishEditing: ((UIImage, [AnyHashable : Any]?) -> Void) = {[weak self] (image, metadata) in
                 GZLogFunc()
-                self?.processImageFromCamera(image, metadata)
+                self?.processImageFromGallery(image, metadata)
             }
             GZLogFunc()
             var extraInfo: [AnyHashable : Any] = [

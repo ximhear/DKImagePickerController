@@ -66,6 +66,7 @@ class ViewController: UIViewController,
         if pickerController.inline {
             self.showInlinePicker()
         } else {
+            pickerController.modalPresentationStyle = .fullScreen
             self.present(pickerController, animated: true) {}
         }
     }
