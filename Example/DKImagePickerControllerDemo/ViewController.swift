@@ -16,7 +16,11 @@ class ViewController: UIViewController,
     UICollectionViewDataSource, UICollectionViewDelegate,
     DKImageAssetExporterObserver {
 
-    var pickerController: DKImagePickerController!
+    var pickerController: DKImagePickerController! {
+        didSet {
+            GZLogFunc()
+        }
+    }
     
     var exportManually = false
     

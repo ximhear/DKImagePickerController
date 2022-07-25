@@ -648,10 +648,53 @@ open class DKAssetGroupDetailVC: UIViewController,
             return false
         }
         if let asset = (collectionView.cellForItem(at: indexPath) as? DKAssetGroupDetailBaseCell)?.asset {
-            return imagePickerController.canSelect(asset: asset)
-        } else {
-            return true
+           
+            imagePickerController.showLoadingBlock()
+            if let image = asset.originalAsset?.getAssetImage() {
+                imagePickerController.hideLoadingBlock()
+                GZLogFunc(image.scale)
+                GZLogFunc(image.size)
+                GZLogFunc(asset.originalAsset?.pixelWidth)
+                GZLogFunc()
+                let maxSize = CGFloat(imagePickerController.maxPixelWidth)
+                if image.size.width == 0 || image.size.height == 0 {
+                    return false
+                }
+                if image.size.width * image.scale > maxSize ||
+                    image.size.height * image.scale > maxSize {
+                    var w: CGFloat = 0
+                    var h: CGFloat = 0
+                    if image.size.width > image.size.height {
+                        w = maxSize
+                        h = maxSize * image.size.height / image.size.width
+                    }
+                    else {
+                        h = maxSize
+                        w = maxSize * image.size.width / image.size.height
+                    }
+                    if let img = image.sd_resizedImage(with: .init(width: w, height: h), scaleMode: .aspectFit) {
+                        GZLogFunc(img.scale)
+                        GZLogFunc(img.size)
+                        GZLogFunc()
+                        asset.image = img
+                    }
+                    else {
+                        asset.image = image
+                    }
+                }
+                else {
+                    asset.image = image
+                }
+                let ret = imagePickerController.canSelect(asset: asset)
+                GZLogFunc(ret)
+                return ret
+            }
+            else {
+                imagePickerController.hideLoadingBlock()
+            }
         }
+        GZLogFunc(false)
+        return false
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -841,5 +884,23 @@ open class DKAssetGroupDetailVC: UIViewController,
             self.resetCachedAssets()
             self.collectionView?.reloadData()
         }
+    }
+}
+
+extension PHAsset {
+    func getAssetImage() -> UIImage? {
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        var image: UIImage?
+        option.isNetworkAccessAllowed = true
+        option.isSynchronous = true
+        manager.requestImage(for: self,
+                             targetSize: CGSize(width: self.pixelWidth, height: self.pixelHeight),
+                             contentMode: .aspectFit,
+                             options: option,
+                             resultHandler: {(result, info) -> Void in
+            image = result
+        })
+        return image
     }
 }

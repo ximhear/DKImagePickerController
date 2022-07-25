@@ -35,6 +35,10 @@ class DKImagePickerControllerDemoVC: UITableViewController {
             let pickerController = DKImagePickerController()
             pickerController.assetType = .allPhotos
             
+            pickerController.maxPixelWidth = 1000
+            pickerController.maxSelectableCount = 5
+            pickerController.maxTotalFileSize = 2 * 1024 * 1024
+ 
             destination.pickerController = pickerController
             
         case "Pick Videos Only":

@@ -67,7 +67,7 @@ open class DKAsset: NSObject {
         }
 	}
 	
-	public private(set) var image: UIImage?
+	public var image: UIImage?
 	public init(image: UIImage) {
         self.localIdentifier = String(image.hash)
         self.pixelWidth = Int(image.size.width * image.scale)

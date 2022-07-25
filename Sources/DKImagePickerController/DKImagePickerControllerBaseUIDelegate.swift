@@ -240,6 +240,38 @@ open class DKImagePickerControllerBaseUIDelegate: NSObject, DKImagePickerControl
         imagePickerController.present(alert, animated: true)
     }
 
+    open func imagePickerControllerDidReachMaxPixelWidthLimit(_ imagePickerController: DKImagePickerController) {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: Locale.current.identifier)
+
+        let formattedMaxSelectableCount = formatter.string(from: NSNumber(value: imagePickerController.maxPixelWidth))
+
+        let alert = UIAlertController(title: DKImagePickerControllerResource.localizedStringWithKey("picker.select.maxPixelWidthLimitReached.error.title"), message: nil, preferredStyle: .alert)
+
+        alert.message = String(format: DKImagePickerControllerResource.localizedStringWithKey("picker.select.maxPixelWidthLimitReached.error.message"), formattedMaxSelectableCount ?? imagePickerController.maxSelectableCount)
+
+        alert.addAction(UIAlertAction(title: DKImagePickerControllerResource.localizedStringWithKey("picker.alert.ok"), style: .cancel) { _ in })
+
+        imagePickerController.present(alert, animated: true)
+    }
+
+    open func imagePickerControllerDidReachMaxTotalFileSizeLimit(_ imagePickerController: DKImagePickerController) {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: Locale.current.identifier)
+
+        let formattedMaxSelectableCount = formatter.string(from: NSNumber(value: imagePickerController.maxTotalFileSize))
+
+        let alert = UIAlertController(title: DKImagePickerControllerResource.localizedStringWithKey("picker.select.maxTotalFileSizeLimitReached.error.title"), message: nil, preferredStyle: .alert)
+
+        alert.message = String(format: DKImagePickerControllerResource.localizedStringWithKey("picker.select.maxTotalFileSizeLimitReached.error.message"), formattedMaxSelectableCount ?? imagePickerController.maxSelectableCount)
+
+        alert.addAction(UIAlertAction(title: DKImagePickerControllerResource.localizedStringWithKey("picker.alert.ok"), style: .cancel) { _ in })
+
+        imagePickerController.present(alert, animated: true)
+    }
+
     open func imagePickerControllerFooterView(_ imagePickerController: DKImagePickerController) -> UIView? {
         return nil
     }

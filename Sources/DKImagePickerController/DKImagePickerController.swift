@@ -77,6 +77,10 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     
     /// The maximum count of assets which the user will be able to select, a value of 0 means no limit.
     @objc public var maxSelectableCount = 0
+    @objc public var maxPixelWidth: CGFloat = 0
+    @objc public var maxTotalFileSize = 0
+    var showLoadingBlock: () -> Void = {}
+    var hideLoadingBlock: () -> Void = {}
     
     /// Photos will be tagged with the location where they are taken.
     /// If true, your Info.plist should include the "Privacy - Location XXX" tag.
@@ -575,6 +579,8 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
     // MARK: - Selection
         
     @objc open func select(asset: DKAsset) {
+        GZLogFunc()
+        
         self.select(assets: [asset])
     }
     
@@ -735,12 +741,37 @@ open class DKImagePickerController: DKUINavigationController, DKImageBaseManager
             return false
         }
         
+        if let image = asset.image, maxPixelWidth > 0 {
+            let pixelWidth = image.size.width * image.scale
+            let pixelHeight = image.size.height * image.scale
+            if pixelWidth > maxPixelWidth || pixelHeight > maxPixelWidth {
+                self.UIDelegate.imagePickerControllerDidReachMaxPixelWidthLimit(self)
+                return false
+            }
+        }
+        
+        if let image = asset.image, maxTotalFileSize > 0, let data = image.pngData() {
+            var totalSize = data.count
+            for x in selectedAssets {
+                if let img = x.image, let png = img.pngData() {
+                    totalSize += png.count
+                }
+            }
+            GZLogFunc(totalSize)
+            if totalSize > maxTotalFileSize * 1024 * 1024 {
+                self.UIDelegate.imagePickerControllerDidReachMaxTotalFileSizeLimit(self)
+                return false
+            }
+        }
+        else {
+            return false
+        }
+        
         if self.maxSelectableCount > 0 {
             let shouldSelect = self.selectedAssetIdentifiers.count < self.maxSelectableCount
             if !shouldSelect && showAlert && !self.UIDelegate.isMaxLimitAlertDisplayed {
                 self.UIDelegate.imagePickerControllerDidReachMaxLimit(self)
             }
-            
             return shouldSelect
         } else {
             return true
